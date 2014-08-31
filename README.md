@@ -248,6 +248,9 @@ TPGID一栏写着-1的都是没有控制终端的进程，也就是守护进程�
    2.让进程摆脱原进程组的控制  
    3.让进程摆脱原控制终端的控制**
 
+#### 4.3 **守护进程的创建**
+![](Screenshots/5.png?raw=true)
+
 	#include <stdio.h>
 	#include <stdlib.h>
 	#include <unistd.h>
@@ -277,10 +280,6 @@ TPGID一栏写着-1的都是没有控制终端的进程，也就是守护进程�
 
 		return 0;
 	}
-
-#### 4.3 **守护进程的创建**
-![](Screenshots/5.png?raw=true)
-
 	#include <stdio.h>
 	#include <stdlib.h>
 	#include <string.h>
