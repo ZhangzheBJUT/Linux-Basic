@@ -248,16 +248,13 @@ TPGID一栏写着-1的都是没有控制终端的进程，也就是守护进程�
    > 2.让进程摆脱原进程组的控制  
    > 3.让进程摆脱原控制终端的控制
 
-
-
 	#include <stdio.h>
 	#include <stdlib.h>
 	#include <unistd.h>
 
 	int main(int argc,char**argv)  
 	{
-		pid_t pid;
-		
+		pid_t pid;   
 		pid = fork();
 		if (pid < 0)
 		{
