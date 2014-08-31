@@ -240,36 +240,35 @@ TPGID一栏写着-1的都是没有控制终端的进程，也就是守护进程�
    会话期是一个或多个进程组的集合。通常，一个会话开始于用户登录，终止于用户退出，在此期间该用户运行的所有进程都属于这个会话期。  
    由于Linux是多用户多任务的分时系统，所以必须要支持多个用户同时使用一个操作系统。当一个用户登录一次系统就形成一次会话。每个会话都有一个会话首领（leader），即创建会话的进程。一个会话可包含多个进程组，但只能有一个前台进程组。
    
-      
-	#include <stdio.h>
-	#include <stdlib.h>
-	#include <unistd.h>
+		#include <stdio.h>
+		#include <stdlib.h>
+		#include <unistd.h>
 
-	int main()  
-	{
-		pid_t pid;   
-		pid = fork();
-		if (pid < 0)
+		int main()  
 		{
-			printf ("fork error");
-		}
-		else if (pid ==0) //子进程
-		{
-			printf("The child process PID is %d.\n",getpid());
-			printf("The Group ID of child is %d.\n",getpgid(0));
-			printf("The Session ID of child is %d.\n",getsid(0));
-			sleep(10);
-			setsid(); //子进程非组长进程，故其成为新会话首进程，且成为组长进程。该进程id即为会话进程
-			printf("Changed:\n");
-			printf("The child process PID is %d.\n",getpid());
-			printf("The Group ID of child is %d.\n",getpgid(0));
-			printf("The Session ID of child is %d.\n",getsid(0));
-		    sleep(20);	
-			exit(0);
-		}
-
-		return 0;
-	}
+			pid_t pid;   
+			pid = fork();
+			if (pid < 0)
+			{
+				printf ("fork error");
+			}
+			else if (pid ==0) //子进程
+			{
+				printf("The child process PID is %d.\n",getpid());
+				printf("The Group ID of child is %d.\n",getpgid(0));
+				printf("The Session ID of child is %d.\n",getsid(0));
+				sleep(10);
+				setsid(); //子进程非组长进程，故其成为新会话首进程，且成为组长进程。该进程id即为会话进程
+				printf("Changed:\n");
+				printf("The child process PID is %d.\n",getpid());
+				printf("The Group ID of child is %d.\n",getpgid(0));
+				printf("The Session ID of child is %d.\n",getsid(0));
+			    sleep(20);	
+				exit(0);
+			}
+	
+			return 0;
+	   }
 
    setsid()调用能创建一个会话,调用setsid 之后，该进程成为新会话的leader。  
    ***注:只有当前进程不是进程组的组长时，才能创建一个新的会话。***  
