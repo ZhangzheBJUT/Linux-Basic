@@ -26,13 +26,12 @@ int main(int argc,char **argv)
 	char op_char = 'O';
 	srand((unsigned int)getpid());
 
-            //create semaphore
+    //create semaphore
 	sem_id = semget((key_t)1234,1,0666|IPC_CREAT);
-
 
 	if (argc >1)
 	{
-		//set sempvalue
+		//set sempvalue 初始化信号量
 		if (!set_semvalue())
 		{
 			fprintf(stderr,"Failed to initialize semaphore");
@@ -44,6 +43,7 @@ int main(int argc,char **argv)
 
 	for (i = 0; i < 10; ++i)
 	{
+		//设置信号量 等待进入
 		if (!semaphore_p())
 		{
 			exit(EXIT_FAILURE);
@@ -54,24 +54,25 @@ int main(int argc,char **argv)
 		sleep(pause_time);
 		printf("%c",op_char);
 		fflush(stdout);
+
+		//退出临界区，信号量设置为可用
 		if (!semaphore_v())
 		{
 			exit(EXIT_FAILURE);
 		}
 		pause_time = rand() % 3;
 		sleep(pause_time);
-
 	}
-
 	printf("\n%d - finished \n",getpid());
+	
 	if (argc>1)
 	{
 		sleep(10);
+		//删除信号量
 		del_semvalue();
 	}
 	exit(EXIT_SUCCESS);
 }
-
 
 static int set_semvalue(void)
 {
@@ -91,7 +92,6 @@ static void del_semvalue()
 	if (semctl(sem_id,0,IPC_RMID,sem_union) == -1)
 		fprintf(stderr, "Failedto delete semaphore.\n");
 }
-
 
 static int semaphore_p()
 {
